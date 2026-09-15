@@ -1,21 +1,29 @@
 export interface LessonStep {
+  /** i18n key for the step title */
   title: string;
+  /** i18n key for the step detail */
   detail: string;
 }
 
 export interface Quiz {
+  /** i18n key for the question */
   question: string;
+  /** i18n keys for the options */
   options: string[];
   correctIndex: number;
+  /** i18n key for the explanation */
   explanation: string;
 }
 
 export interface Lesson {
   id: string;
+  /** i18n key */
   title: string;
   minutes: number;
+  /** i18n key for the badge name (badge.*) */
   badge: string;
   category: "first-aid" | "heat" | "hygiene" | "medication";
+  /** i18n key */
   summary: string;
   steps: LessonStep[];
   quiz: Quiz;
@@ -24,187 +32,103 @@ export interface Lesson {
 export const LESSONS: Lesson[] = [
   {
     id: "l1",
-    title: "If a co-worker falls from scaffolding",
+    title: "academy.l1.title",
     minutes: 4,
-    badge: "First Responder",
+    badge: "badge.firstResponder",
     category: "first-aid",
-    summary:
-      "The first 10 minutes decide whether he reaches the hospital alive. Learn the sequence before you ever need it.",
+    summary: "academy.l1.summary",
     steps: [
-      {
-        title: "1. Do not move him",
-        detail:
-          "Falls from height can break the spine. Moving him wrongly can turn a survivable injury into paralysis. Secure the area first.",
-      },
-      {
-        title: "2. Shout for the site medic",
-        detail: "Call 998 (UAE ambulance) and your site supervisor. Speak slowly; say 'worker fell from height' first.",
-      },
-      {
-        title: "3. Check breathing",
-        detail:
-          "Look at the chest, listen at the mouth. If he is not breathing, start chest compressions — 100 per minute, centre of the chest.",
-      },
-      {
-        title: "4. Stop visible bleeding",
-        detail: "Press firmly on any bleeding wound with a clean cloth. Keep pressure until help arrives.",
-      },
-      {
-        title: "5. Keep him warm and talk to him",
-        detail: "Cover with a blanket. Talk in your language so he stays calm and awake.",
-      },
-      {
-        title: "6. Tell the paramedics what you saw",
-        detail: "How far he fell, where he landed, how long he was unconscious. Two sentences can save him.",
-      },
+      { title: "academy.l1.step1.title", detail: "academy.l1.step1.detail" },
+      { title: "academy.l1.step2.title", detail: "academy.l1.step2.detail" },
+      { title: "academy.l1.step3.title", detail: "academy.l1.step3.detail" },
+      { title: "academy.l1.step4.title", detail: "academy.l1.step4.detail" },
+      { title: "academy.l1.step5.title", detail: "academy.l1.step5.detail" },
+      { title: "academy.l1.step6.title", detail: "academy.l1.step6.detail" },
     ],
     quiz: {
-      question: "Your co-worker falls and is awake but says his neck hurts. What do you do?",
-      options: [
-        "Help him stand up and walk to the shade",
-        "Keep him still, call 998, and hold his head steady",
-        "Give him water and wait 30 minutes",
-      ],
+      question: "academy.l1.quiz.q",
+      options: ["academy.l1.quiz.opt1", "academy.l1.quiz.opt2", "academy.l1.quiz.opt3"],
       correctIndex: 1,
-      explanation:
-        "Neck pain after a fall means possible spinal injury. The only safe move is no move — stabilise and call the ambulance.",
+      explanation: "academy.l1.quiz.explain",
     },
   },
   {
     id: "l2",
-    title: "Heatstroke: recognise and respond",
+    title: "academy.l2.title",
     minutes: 3,
-    badge: "Heat Guardian",
+    badge: "badge.heatGuardian",
     category: "heat",
-    summary: "Confusion, no sweating, hot dry skin — you have minutes, not hours. Practise until it is reflex.",
+    summary: "academy.l2.summary",
     steps: [
-      {
-        title: "1. Know the three signs",
-        detail: "Confusion or strange behaviour, skin hot and dry (sweating has stopped), body temperature very high.",
-      },
-      {
-        title: "2. Move to shade and strip",
-        detail: "Get him to shade immediately, remove outer clothing, wet the skin with any water you have.",
-      },
-      {
-        title: "3. Fan continuously",
-        detail: "Airflow over wet skin cools fastest. Two men fanning beats one man panicking.",
-      },
-      {
-        title: "4. Call 998 while cooling",
-        detail: "Never 'wait to see'. Heatstroke kills within the hour.",
-      },
-      {
-        title: "5. Nothing by mouth if confused",
-        detail: "A confused worker can choke on water. Only give sips if he is fully awake.",
-      },
+      { title: "academy.l2.step1.title", detail: "academy.l2.step1.detail" },
+      { title: "academy.l2.step2.title", detail: "academy.l2.step2.detail" },
+      { title: "academy.l2.step3.title", detail: "academy.l2.step3.detail" },
+      { title: "academy.l2.step4.title", detail: "academy.l2.step4.detail" },
+      { title: "academy.l2.step5.title", detail: "academy.l2.step5.detail" },
     ],
     quiz: {
-      question: "Which is the strongest sign that it is heatstroke, not just exhaustion?",
-      options: [
-        "He is sweating heavily and thirsty",
-        "He is confused and his skin is hot and dry",
-        "His legs are cramping",
-      ],
+      question: "academy.l2.quiz.q",
+      options: ["academy.l2.quiz.opt1", "academy.l2.quiz.opt2", "academy.l2.quiz.opt3"],
       correctIndex: 1,
-      explanation:
-        "Heavy sweating and cramps mean heat exhaustion — serious but recoverable. Confusion with dry hot skin means sweating has failed: heatstroke. Cool him NOW.",
+      explanation: "academy.l2.quiz.explain",
     },
   },
   {
     id: "l3",
-    title: "Handwashing in the camp",
+    title: "academy.l3.title",
     minutes: 2,
-    badge: "Hygiene Hero",
+    badge: "badge.hygieneHero",
     category: "hygiene",
-    summary: "Six camp 'touch points' carry most infections — the bus rail, the canteen, the shared phone charger.",
+    summary: "academy.l3.summary",
     steps: [
-      {
-        title: "1. Twenty seconds, water and soap",
-        detail: "Plain soap works. Sing the first two lines of any song you know — that is twenty seconds.",
-      },
-      {
-        title: "2. Wash before eating, always",
-        detail: "Hands touch the bus rail, money, tools, and then your roti. Break that chain.",
-      },
-      {
-        title: "3. After the washroom and after coughing",
-        detail: "During the current flu alert, wash after coughing into your hand as well.",
-      },
-      {
-        title: "4. Keep a small soap at your bunk",
-        detail: "The shared bathroom soap runs out exactly when it is needed. Own soap = no excuse.",
-      },
+      { title: "academy.l3.step1.title", detail: "academy.l3.step1.detail" },
+      { title: "academy.l3.step2.title", detail: "academy.l3.step2.detail" },
+      { title: "academy.l3.step3.title", detail: "academy.l3.step3.detail" },
+      { title: "academy.l3.step4.title", detail: "academy.l3.step4.detail" },
     ],
     quiz: {
-      question: "During the flu alert, when should you wash your hands?",
-      options: [
-        "Only before eating",
-        "Before eating, after the washroom, and after coughing or sneezing",
-        "Once a day after shift",
-      ],
+      question: "academy.l3.quiz.q",
+      options: ["academy.l3.quiz.opt1", "academy.l3.quiz.opt2", "academy.l3.quiz.opt3"],
       correctIndex: 1,
-      explanation:
-        "During an outbreak, every hand-to-face moment is a risk. Three wash moments cover almost all of them.",
+      explanation: "academy.l3.quiz.explain",
     },
   },
   {
     id: "l4",
-    title: "Medicine safety: painkillers are not candy",
+    title: "academy.l4.title",
     minutes: 4,
-    badge: "Medicine Wise",
+    badge: "badge.medicineWise",
     category: "medication",
-    summary:
-      "What mixing painkillers, alcohol, and 'energy' tablets really does to your liver and your family's future.",
+    summary: "academy.l4.summary",
     steps: [
-      {
-        title: "1. One type of painkiller at a time",
-        detail:
-          "Taking paracetamol AND ibuprofen AND 'extra strength' together can overload the liver. Doctors at the clinic will tell you what is safe — ask, it is free.",
-      },
-      {
-        title: "2. Alcohol plus painkillers damages the liver",
-        detail:
-          "The liver processes both. Together, they cause silent damage that appears years later as liver disease.",
-      },
-      {
-        title: "3. Sleeping pills from a friend are dangerous",
-        detail:
-          "Doses that suit a big man can stop breathing in another. Never share prescription medicine — and mixing sleeping pills with alcohol can be fatal.",
-      },
-      {
-        title: "4. Addiction starts as 'just to sleep'",
-        detail:
-          "Using codeine or opioid painkillers to sleep or to forget stress builds dependence within weeks. The Addiction Recovery circle is anonymous — just listen at first.",
-      },
+      { title: "academy.l4.step1.title", detail: "academy.l4.step1.detail" },
+      { title: "academy.l4.step2.title", detail: "academy.l4.step2.detail" },
+      { title: "academy.l4.step3.title", detail: "academy.l4.step3.detail" },
+      { title: "academy.l4.step4.title", detail: "academy.l4.step4.detail" },
     ],
     quiz: {
-      question: "A friend offers you his sleeping pills because you cannot sleep after night shift. What is the safest answer?",
-      options: [
-        "Take half — a small dose is safe",
-        "Refuse, and ask a doctor — the voice consult costs almost nothing",
-        "Take one tonight and give one back tomorrow",
-      ],
+      question: "academy.l4.quiz.q",
+      options: ["academy.l4.quiz.opt1", "academy.l4.quiz.opt2", "academy.l4.quiz.opt3"],
       correctIndex: 1,
-      explanation:
-        "Prescription doses are personal. A doctor can find what is actually wrong with your sleep — safely, in your own language, for about five cents.",
+      explanation: "academy.l4.quiz.explain",
     },
   },
 ];
 
 export interface BadgeData {
   id: string;
+  /** i18n key for the badge label */
   label: string;
   earned: boolean;
 }
 
 export const BADGES: BadgeData[] = [
-  { id: "b1", label: "Hygiene Hero", earned: true },
-  { id: "b2", label: "7-Day Streak", earned: true },
-  { id: "b3", label: "Cough Etiquette", earned: true },
-  { id: "b4", label: "First Responder", earned: false },
-  { id: "b5", label: "Heat Guardian", earned: false },
-  { id: "b6", label: "Medicine Wise", earned: false },
+  { id: "b1", label: "badge.hygieneHero", earned: true },
+  { id: "b2", label: "badge.streak7", earned: true },
+  { id: "b3", label: "badge.cough", earned: true },
+  { id: "b4", label: "badge.firstResponder", earned: false },
+  { id: "b5", label: "badge.heatGuardian", earned: false },
+  { id: "b6", label: "badge.medicineWise", earned: false },
 ];
 
 export const CAMP_LEADERBOARD = [
@@ -216,30 +140,37 @@ export const CAMP_LEADERBOARD = [
 ];
 
 export const ECO_CHALLENGE = {
-  title: "Walk-to-Work Week",
+  /** i18n key */
+  title: "academy.eco.title",
   joined: 214,
   goal: 500,
   camps: 3,
-  treeNote: "Every 30 walked days plants a tree in your home district — diaspora-sponsored",
+  /** i18n key */
+  treeNote: "academy.eco.tree",
   progressPct: 43,
 };
 
 export const CIVIC_PETITIONS = [
   {
     id: "p1",
-    title: "Basic health insurance for camp workers",
-    authority: "To: Ministry of Emigration & Employers' Association",
+    /** i18n key */
+    title: "academy.p1.title",
+    /** i18n key */
+    authority: "academy.p1.authority",
     signatures: 18420,
     target: 25000,
-    summary:
-      "Camp accommodation should include basic health coverage, not just injury-on-site. Workers who are sick wait until collapse — that costs everyone more.",
+    /** i18n key */
+    summary: "academy.p1.summary",
   },
   {
     id: "p2",
-    title: "Camp clinic open after 19:00",
-    authority: "To: Al Quoz accommodation management",
+    /** i18n key */
+    title: "academy.p2.title",
+    /** i18n key */
+    authority: "academy.p2.authority",
     signatures: 864,
     target: 1500,
-    summary: "Shift ends at 18:00. A clinic that closes at 17:00 is a clinic we cannot use.",
+    /** i18n key */
+    summary: "academy.p2.summary",
   },
 ];

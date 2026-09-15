@@ -1,39 +1,44 @@
 export interface TriageOption {
   id: string;
-  label: string;
+  /** i18n key for the chip label */
+  key: string;
 }
 
 export const SYMPTOM_OPTIONS: TriageOption[] = [
-  { id: "fever", label: "Fever" },
-  { id: "cough", label: "Cough" },
-  { id: "headache", label: "Headache" },
-  { id: "sore-throat", label: "Sore throat" },
-  { id: "body-aches", label: "Body aches" },
-  { id: "rash", label: "Skin rash" },
+  { id: "fever", key: "sym.fever" },
+  { id: "cough", key: "sym.cough" },
+  { id: "headache", key: "sym.headache" },
+  { id: "sore-throat", key: "sym.soreThroat" },
+  { id: "body-aches", key: "sym.bodyAches" },
+  { id: "rash", key: "sym.rash" },
 ];
 
 export const DURATION_OPTIONS: TriageOption[] = [
-  { id: "today", label: "Started today" },
-  { id: "short", label: "1–2 days" },
-  { id: "week", label: "3–7 days" },
-  { id: "long", label: "More than a week" },
+  { id: "today", key: "dur.today" },
+  { id: "short", key: "dur.short" },
+  { id: "week", key: "dur.week" },
+  { id: "long", key: "dur.long" },
 ];
 
 export const REDFLAG_OPTIONS: TriageOption[] = [
-  { id: "chest-pain", label: "Chest pain or pressure" },
-  { id: "breathing", label: "Difficulty breathing" },
-  { id: "fainting", label: "Fainting or collapse" },
-  { id: "none", label: "None of these" },
+  { id: "chest-pain", key: "rf.chest" },
+  { id: "breathing", key: "rf.breathing" },
+  { id: "fainting", key: "rf.fainting" },
+  { id: "none", key: "rf.none" },
 ];
 
 export type TriageRoute = "self-care" | "tele-consult" | "in-person";
 
 export interface TriageResult {
   route: TriageRoute;
+  /** i18n key */
   title: string;
+  /** i18n key */
   reason: string;
   color: "teal" | "amber" | "red";
+  /** i18n keys */
   advice: string[];
+  /** i18n key */
   cta: string;
 }
 
@@ -45,61 +50,42 @@ export function evaluateTriage(symptoms: string[], duration: string, redflags: s
   if (redflagged) {
     return {
       route: "in-person",
-      title: "Seek in-person care NOW",
-      reason:
-        "Your answers include a warning sign (chest pain, breathing difficulty, or fainting). Voice advice is not enough for this — a doctor must examine you.",
+      title: "triage.red.title",
+      reason: "triage.red.reason",
       color: "red",
-      advice: [
-        "Go to your camp clinic or the nearest emergency room immediately",
-        "Ambulance in the UAE: 998 — say it in Urdu if you need to",
-        "Do not continue working today",
-      ],
-      cta: "Show clinic directions",
+      advice: ["triage.red.advice1", "triage.red.advice2", "triage.red.advice3"],
+      cta: "triage.red.cta",
     };
   }
 
   if (infectious && (duration === "week" || duration === "long")) {
     return {
       route: "in-person",
-      title: "See a doctor in person",
-      reason: "Fever or cough lasting more than 3 days should be examined and possibly tested.",
+      title: "triage.long.title",
+      reason: "triage.long.reason",
       color: "red",
-      advice: [
-        "Book the next slot at your camp clinic",
-        "Wear a mask on the way",
-        "A voice consult can help while you wait",
-      ],
-      cta: "Show clinic directions",
+      advice: ["triage.long.advice1", "triage.long.advice2", "triage.long.advice3"],
+      cta: "triage.long.cta",
     };
   }
 
   if (infectious && (duration === "today" || duration === "short")) {
     return {
       route: "tele-consult",
-      title: "A voice consult is recommended",
-      reason:
-        "Fever with cough for under 3 days, and no warning signs. A doctor who speaks your language should hear your voice — no in-person slot needed, so it stays free for someone who does need it.",
+      title: "triage.tele.title",
+      reason: "triage.tele.reason",
       color: "teal",
-      advice: [
-        "Matched doctors are available today",
-        "Cost: about $0.05 — audio only, low data",
-        "If new chest pain or breathing trouble starts, go in person immediately",
-      ],
-      cta: "Find my doctor",
+      advice: ["triage.tele.advice1", "triage.tele.advice2", "triage.tele.advice3"],
+      cta: "triage.tele.cta",
     };
   }
 
   return {
     route: "self-care",
-    title: "Self-care for today",
-    reason:
-      "Mild symptoms with no warning signs. Rest today, and check in again tomorrow — the camp has a flu alert active, so keep watching for fever.",
+    title: "triage.self.title",
+    reason: "triage.self.reason",
     color: "amber",
-    advice: [
-      "Rest and drink water",
-      "Report again tomorrow — 30 seconds by voice",
-      "Wear a mask in shared spaces while the flu alert is active",
-    ],
-    cta: "Back to home",
+    advice: ["triage.self.advice1", "triage.self.advice2", "triage.self.advice3"],
+    cta: "triage.self.cta",
   };
 }

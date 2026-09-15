@@ -1,8 +1,8 @@
 "use client";
 
+import { useMemo } from "react";
 import { create } from "zustand";
-import type { LangCode } from "@/data/i18n";
-import { getLang } from "@/data/i18n";
+import { makeT, type LangCode, type Translator } from "@/i18n";
 
 export type TabKey = "home" | "clinic" | "circles" | "academy" | "data";
 
@@ -20,7 +20,11 @@ export const useAwaaz = create<AwaazState>((set) => ({
   setTab: (tab) => set({ tab }),
 }));
 
-export function useLang() {
+/**
+ * Translation hook: `const { t, dir, langName } = useT()`.
+ * Re-created only when the language changes.
+ */
+export function useT(): Translator {
   const lang = useAwaaz((s) => s.lang);
-  return getLang(lang);
+  return useMemo(() => makeT(lang), [lang]);
 }

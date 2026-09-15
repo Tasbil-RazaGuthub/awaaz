@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Waveform } from "./waveform";
-import { useLang } from "@/lib/awaaz-store";
+import { useT } from "@/lib/awaaz-store";
 import { CIRCLE_ROOMS, type CircleRoom } from "@/data/circles";
 import { useAwaaz } from "@/lib/awaaz-store";
 import {
@@ -22,28 +22,29 @@ import {
 } from "lucide-react";
 
 function RoomCard({ room, onOpen }: { room: CircleRoom; onOpen: () => void }) {
+  const { t, langName } = useT();
   return (
     <Card className="p-4 transition-colors hover:border-primary/40">
-      <button type="button" onClick={onOpen} className="w-full text-start" aria-label={`Open circle room ${room.name}`}>
+      <button type="button" onClick={onOpen} className="w-full text-start" aria-label={t("a11y.openRoom", { name: t(room.name) })}>
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <p className="font-semibold">{room.name}</p>
+              <p className="font-semibold">{t(room.name)}</p>
               {room.live && (
                 <Badge className="gap-1.5 bg-destructive/90 text-white">
                   <span className="live-dot h-1.5 w-1.5 rounded-full bg-white" aria-hidden="true" />
-                  LIVE · {room.speakingNow} speaking
+                  {t("circles.live", { n: room.speakingNow })}
                 </Badge>
               )}
-              {room.privacy === "anonymous" && <Badge variant="secondary">Anonymous</Badge>}
+              {room.privacy === "anonymous" && <Badge variant="secondary">{t("circles.anonymous")}</Badge>}
             </div>
             <p className="mt-0.5 text-sm text-muted-foreground" dir="auto">
               {room.nativeName}
             </p>
-            <p className="mt-1.5 text-sm">{room.topic}</p>
+            <p className="mt-1.5 text-sm">{t(room.topic)}</p>
             <div className="mt-2 flex flex-wrap gap-1.5 text-xs">
               {room.languages.map((l) => (
-                <Badge key={l} variant="outline" className="font-normal">{l}</Badge>
+                <Badge key={l} variant="outline" className="font-normal">{langName(l)}</Badge>
               ))}
               <span className="inline-flex items-center gap-1 py-0.5 text-muted-foreground">
                 <Users className="h-3 w-3" aria-hidden="true" /> {room.members}
@@ -58,6 +59,7 @@ function RoomCard({ room, onOpen }: { room: CircleRoom; onOpen: () => void }) {
 }
 
 function RoomView({ room, onBack }: { room: CircleRoom; onBack: () => void }) {
+  const { t, langName } = useT();
   const [playingId, setPlayingId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -70,7 +72,7 @@ function RoomView({ room, onBack }: { room: CircleRoom; onBack: () => void }) {
     <div className="space-y-4">
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="sm" className="min-h-11" onClick={onBack}>
-          <ChevronLeft className="h-4 w-4" aria-hidden="true" /> Rooms
+          <ChevronLeft className="h-4 w-4" aria-hidden="true" /> {t("circles.room.back")}
         </Button>
       </div>
 
@@ -81,12 +83,12 @@ function RoomView({ room, onBack }: { room: CircleRoom; onBack: () => void }) {
       >
         <LifeBuoy className="h-5 w-5 shrink-0 text-destructive" aria-hidden="true" />
         <p className="min-w-0 flex-1 text-sm">
-          <span className="font-medium">Struggling or in crisis? You are not alone.</span>{" "}
-          <span className="text-muted-foreground">A counselor can join privately, in your language, right now.</span>
+          <span className="font-medium">{t("circles.escalation.1")}</span>{" "}
+          <span className="text-muted-foreground">{t("circles.escalation.2")}</span>
         </p>
         <div className="flex gap-2">
           <Button size="sm" variant="destructive" className="min-h-11">
-            <Phone className="me-1 h-4 w-4" aria-hidden="true" /> Get help now
+            <Phone className="me-1 h-4 w-4" aria-hidden="true" /> {t("circles.escalation.cta")}
           </Button>
         </div>
       </div>
@@ -94,7 +96,7 @@ function RoomView({ room, onBack }: { room: CircleRoom; onBack: () => void }) {
       <Card>
         <CardHeader className="p-4 pb-3 sm:p-5 sm:pb-3">
           <CardTitle className="text-base sm:text-lg">
-            {room.name}
+            {t(room.name)}
             <span className="mt-1 block text-sm font-normal text-muted-foreground" dir="auto">
               {room.nativeName}
             </span>
@@ -102,15 +104,15 @@ function RoomView({ room, onBack }: { room: CircleRoom; onBack: () => void }) {
           <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
             <Badge variant="secondary" className="gap-1">
               <Star className="h-3 w-3 fill-current" aria-hidden="true" />
-              Moderator: {room.moderator}
+              {t("circles.moderator", { name: t(room.moderator) })}
             </Badge>
             {room.live && (
               <Badge className="gap-1.5 bg-destructive/90 text-white">
-                <span className="live-dot h-1.5 w-1.5 rounded-full bg-white" aria-hidden="true" /> LIVE
+                <span className="live-dot h-1.5 w-1.5 rounded-full bg-white" aria-hidden="true" /> {t("circles.liveTag")}
               </Badge>
             )}
             <span className="inline-flex items-center gap-1 text-muted-foreground">
-              <Users className="h-3 w-3" aria-hidden="true" /> {room.members} members
+              <Users className="h-3 w-3" aria-hidden="true" /> {t("circles.members", { n: room.members })}
             </span>
           </div>
         </CardHeader>
@@ -118,7 +120,14 @@ function RoomView({ room, onBack }: { room: CircleRoom; onBack: () => void }) {
         <CardContent className="space-y-4 p-4 pt-2 sm:p-5 sm:pt-2">
           {/* safe-by-design chips */}
           <div className="flex flex-wrap gap-1.5">
-            {["Voice only", "No DMs", "No images", "No video", "Moderated", "One-tap escalation"].map((c) => (
+            {[
+              t("circles.safety.voiceOnly"),
+              t("circles.safety.noDm"),
+              t("circles.safety.noImages"),
+              t("circles.safety.noVideo"),
+              t("circles.safety.moderated"),
+              t("circles.safety.escalation"),
+            ].map((c) => (
               <Badge key={c} variant="outline" className="gap-1 text-xs font-normal">
                 <ShieldCheck className="h-3 w-3" aria-hidden="true" /> {c}
               </Badge>
@@ -126,14 +135,14 @@ function RoomView({ room, onBack }: { room: CircleRoom; onBack: () => void }) {
           </div>
 
           {room.messages.length > 0 ? (
-            <div className="max-h-96 space-y-3 overflow-y-auto scroll-thin pe-1" aria-label="Room conversation">
+            <div className="max-h-96 space-y-3 overflow-y-auto scroll-thin pe-1" aria-label={t("a11y.roomConversation")}>
               {room.messages.map((m) => (
                 <button
                   key={m.id}
                   type="button"
                   onClick={() => setPlayingId(playingId === m.id ? null : m.id)}
                   className="flex w-full gap-3 rounded-xl p-2 text-start transition-colors hover:bg-muted/60"
-                  aria-label={`Play voice note from ${m.speaker}, ${m.duration}`}
+                  aria-label={t("a11y.playNote", { speaker: m.speaker, duration: m.duration })}
                 >
                   <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-bold">
                     {m.speaker.charAt(0)}
@@ -146,8 +155,8 @@ function RoomView({ room, onBack }: { room: CircleRoom; onBack: () => void }) {
                       <span className={m.role === "moderator" ? "font-semibold text-chart-2" : "font-medium text-foreground"}>
                         {m.speaker}
                       </span>
-                      {m.role === "moderator" && <Badge variant="secondary" className="text-[10px]">moderator</Badge>}
-                      <span>{m.language}</span>
+                      {m.role === "moderator" && <Badge variant="secondary" className="text-[10px]">{t("circles.modTag")}</Badge>}
+                      <span>{langName(m.language)}</span>
                       <span>{m.duration}</span>
                     </div>
                     <div className="mt-1.5 flex items-center gap-3">
@@ -156,13 +165,14 @@ function RoomView({ room, onBack }: { room: CircleRoom; onBack: () => void }) {
                         active={playingId === m.id}
                         className="h-7 w-36 shrink-0"
                         seed={m.id.length + 5}
+                        label={t("a11y.waveform")}
                       />
                       <span className="text-xs text-primary">
-                        {playingId === m.id ? "playing…" : "tap to play"}
+                        {playingId === m.id ? t("circles.playing") : t("circles.tapToPlay")}
                       </span>
                     </div>
                     <p className="mt-1.5 text-sm leading-relaxed" dir="auto">{m.native}</p>
-                    <p className="mt-0.5 text-xs text-muted-foreground">{m.english}</p>
+                    <p className="mt-0.5 text-xs text-muted-foreground">{t(m.text)}</p>
                   </div>
                 </button>
               ))}
@@ -170,40 +180,39 @@ function RoomView({ room, onBack }: { room: CircleRoom; onBack: () => void }) {
           ) : (
             <div className="flex items-center gap-3 rounded-xl bg-muted/60 p-4 text-sm text-muted-foreground">
               <HeartCrack className="h-5 w-5 shrink-0" aria-hidden="true" />
-              A quiet room right now. Join and just listen — that is allowed here too.
+              {t("circles.quiet")}
             </div>
           )}
 
           {/* participation bar */}
           <div className="flex items-center justify-between gap-3 rounded-xl border p-3">
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="icon" className="h-11 w-11 rounded-full" aria-label="Raise hand">
+              <Button variant="outline" size="icon" className="h-11 w-11 rounded-full" aria-label={t("a11y.raiseHand")}>
                 <Hand className="h-5 w-5" aria-hidden="true" />
               </Button>
-              <Button variant="default" size="icon" className="h-11 w-11 rounded-full" aria-label="Speak in the room">
+              <Button variant="default" size="icon" className="h-11 w-11 rounded-full" aria-label={t("a11y.speak")}>
                 <Volume2 className="h-5 w-5" aria-hidden="true" />
               </Button>
               <p className="text-xs text-muted-foreground">
-                {room.live ? "Listening in… tap the mic to speak" : "Room opens at 20:00 GST"}
+                {room.live ? t("circles.listening") : t("circles.roomOpens")}
               </p>
             </div>
             <Button variant="ghost" size="sm" className="min-h-11" onClick={onBack}>
-              Leave room
+              {t("circles.leave")}
             </Button>
           </div>
         </CardContent>
       </Card>
 
       <p className="text-xs text-muted-foreground">
-        Direct messages are off for everyone — friendship requests go through the room, and the moderator approves each
-        one. Nothing here can be screenshotted, faked, or forwarded. That is the design.
+        {t("circles.footer")}
       </p>
     </div>
   );
 }
 
 export function CirclesView() {
-  const t = useLang();
+  const { t } = useT();
   const setTab = useAwaaz((s) => s.setTab);
   const [openRoom, setOpenRoom] = useState<string | null>(null);
   const room = CIRCLE_ROOMS.find((r) => r.id === openRoom);
@@ -215,10 +224,9 @@ export function CirclesView() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-semibold">{t.strings.circlesTitle}</h2>
+        <h2 className="text-lg font-semibold">{t("circles.title")}</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Voice-only rooms with people who understand — your district, your language, your situation. Moderated, safe,
-          and impossible to misuse.
+          {t("circles.intro")}
         </p>
       </div>
 
@@ -232,9 +240,7 @@ export function CirclesView() {
         <CardContent className="flex items-start gap-3 p-4 sm:p-5">
           <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
           <p className="text-sm text-muted-foreground">
-            Why audio-only? Because voice cannot be screenshotted, filtered, or faked — it removes the entire class of
-            image-based abuse that sank earlier audio social apps, while staying low-bandwidth enough for a shared camp
-            phone.
+            {t("circles.whyAudio")}
           </p>
         </CardContent>
       </Card>

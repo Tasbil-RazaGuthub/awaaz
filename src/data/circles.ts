@@ -5,38 +5,39 @@ export interface CircleMessage {
   language: string;
   duration: string;
   native: string;
-  english: string;
+  /** i18n key for the English translation line */
+  text: string;
 }
 
 export interface CircleRoom {
   id: string;
+  /** i18n key for the room name */
   name: string;
   nativeName: string;
+  /** i18n key for the topic line */
   topic: string;
   members: number;
   live: boolean;
   speakingNow: number;
   languages: string[];
+  /** literal moderator name, or an i18n key (circles.r3.moderator / circles.r4.moderator) */
   moderator: string;
   privacy: "open" | "anonymous";
-  description: string;
   messages: CircleMessage[];
 }
 
 export const CIRCLE_ROOMS: CircleRoom[] = [
   {
     id: "r1",
-    name: "Home Village: Gujranwala",
+    name: "circles.r1.name",
     nativeName: "گھر کا پنڈ — گوجرانوالہ",
-    topic: "Talk in your own dialect with men from your district",
+    topic: "circles.r1.topic",
     members: 24,
     live: true,
     speakingNow: 3,
     languages: ["Punjabi", "Urdu"],
     moderator: "Sardar Ali",
     privacy: "open",
-    description:
-      "Workers from Gujranwala and nearby districts. News from home, who is travelling next, salaam to families.",
     messages: [
       {
         id: "m1",
@@ -45,7 +46,7 @@ export const CIRCLE_ROOMS: CircleRoom[] = [
         language: "Punjabi",
         duration: "0:12",
         native: "وصولی ہو گئی؟ وڈیے نے تنخواہ بھیجی؟",
-        english: "Did the transfer come through? Did you send the salary home?",
+        text: "circles.r1.msg1",
       },
       {
         id: "m2",
@@ -54,7 +55,7 @@ export const CIRCLE_ROOMS: CircleRoom[] = [
         language: "Punjabi",
         duration: "0:08",
         native: "جی بھابھی نوں پہنچ گئی، کل گھر فون کریں گے۔",
-        english: "Yes, sister-in-law received it. We'll call home tomorrow.",
+        text: "circles.r1.msg2",
       },
       {
         id: "m3",
@@ -63,23 +64,21 @@ export const CIRCLE_ROOMS: CircleRoom[] = [
         language: "Urdu",
         duration: "0:20",
         native: "بھائیو، کیمپ کلینک میں جمعرات کو فلو کی ویکسین ہے۔ جو جانا چاہے، میں نال ہو سکتا ہوں۔",
-        english:
-          "Brothers — the camp clinic has flu vaccines on Thursday. Whoever wants to go, I can come along.",
+        text: "circles.r1.msg3",
       },
     ],
   },
   {
     id: "r2",
-    name: "New Fathers",
+    name: "circles.r2.name",
     nativeName: "نئے باپ",
-    topic: "For men whose first child was born after they left home",
+    topic: "circles.r2.topic",
     members: 11,
     live: false,
     speakingNow: 0,
     languages: ["Urdu", "Bengali"],
     moderator: "Javed Iqbal",
     privacy: "open",
-    description: "Share the weight of becoming a father from 3,000 km away.",
     messages: [
       {
         id: "m1",
@@ -88,7 +87,7 @@ export const CIRCLE_ROOMS: CircleRoom[] = [
         language: "Bengali",
         duration: "0:18",
         native: "আমার মেয়ে হয়েছে, কিন্তু আমি ছুঁতে পারি না।",
-        english: "My daughter was born, but I can't hold her.",
+        text: "circles.r2.msg1",
       },
       {
         id: "m2",
@@ -97,37 +96,34 @@ export const CIRCLE_ROOMS: CircleRoom[] = [
         language: "Urdu",
         duration: "0:24",
         native: "رفیق بھائی، یہ غم زیادہ دیر نہ رکھیں۔ ایک وائس نوٹ ریکارڈ کریں — بیبی سلیپ کے بعد سنیں گے۔",
-        english: "Rafiq bhai, don't carry this alone. Record a voice note — she can hear it when she grows.",
+        text: "circles.r2.msg2",
       },
     ],
   },
   {
     id: "r3",
-    name: "Grief Support",
+    name: "circles.r3.name",
     nativeName: "دکھ سنانے کا حلقہ",
-    topic: "For those who lost someone far away",
+    topic: "circles.r3.topic",
     members: 8,
     live: false,
     speakingNow: 0,
     languages: ["Multilingual"],
-    moderator: "Trained moderator",
+    moderator: "circles.r3.moderator",
     privacy: "open",
-    description: "A quiet room, moderated by trained listeners. Speak or just listen.",
     messages: [],
   },
   {
     id: "r4",
-    name: "Addiction Recovery",
+    name: "circles.r4.name",
     nativeName: "صحت بحالی",
-    topic: "Anonymous. No names, no judgement.",
+    topic: "circles.r4.topic",
     members: 12,
     live: true,
     speakingNow: 1,
     languages: ["Urdu", "Hindi", "Pashto"],
-    moderator: "Recovery coach + doctor on call",
+    moderator: "circles.r4.moderator",
     privacy: "anonymous",
-    description:
-      "For alcohol, opioids, khat. Anonymous voice-only room with a clinical escalation path — a doctor can join privately.",
     messages: [
       {
         id: "m1",
@@ -136,43 +132,34 @@ export const CIRCLE_ROOMS: CircleRoom[] = [
         language: "Urdu",
         duration: "0:31",
         native: "تین مہینے ہو گئے۔ مشکل دن آتے ہیں، خاص کر تنخواہ نہ آنے پر۔",
-        english: "It's been three months. Hard days still come — especially when the salary is late.",
+        text: "circles.r4.msg1",
       },
     ],
   },
   {
     id: "r5",
-    name: "Friday Recitation",
+    name: "circles.r5.name",
     nativeName: "جمعہ کی تلاوت",
-    topic: "Quran recitation and dua together before Jumu'ah",
+    topic: "circles.r5.topic",
     members: 63,
     live: false,
     speakingNow: 0,
     languages: ["Arabic", "Urdu"],
     moderator: "Imam Yusuf",
     privacy: "open",
-    description: "A calm room before Friday prayer. Recitation, then duas for families back home.",
     messages: [],
   },
   {
     id: "r6",
-    name: "Diwali Preparations",
+    name: "circles.r6.name",
     nativeName: "दिवाली की तैयारी",
-    topic: "Plans, sweets, and photos of last year",
+    topic: "circles.r6.topic",
     members: 30,
     live: true,
     speakingNow: 2,
     languages: ["Hindi"],
     moderator: "Anil Kumar",
     privacy: "open",
-    description: "Diwali in the camp: who is making sweets, which wall gets the rangoli.",
     messages: [],
   },
-];
-
-export const SAFE_DESIGN_BADGES = [
-  { label: "No DMs", detail: "Direct messages are off for everyone — requests must go through the room" },
-  { label: "No images", label2: "No video", detail: "Voice only. Nothing that can be screenshotted or faked" },
-  { label: "Moderated", detail: "Every room has a trained, vetted moderator" },
-  { label: "Escalation", detail: "One tap connects distress to a doctor or hotline" },
 ];

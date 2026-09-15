@@ -30,10 +30,14 @@ export interface HealthAlert {
   id: string;
   type: "outbreak" | "occupational" | "environmental" | "seasonal";
   severity: Severity;
+  /** i18n key for the alert title */
   title: string;
   area: string;
+  /** i18n key for the alert summary */
   summary: string;
+  /** i18n keys for the recommended actions */
   actions: string[];
+  /** i18n key for "issued X ago" (e.g. time.ago.2d) */
   issuedAgo: string;
   verifiedClinics: number;
   reportsCount: number;
@@ -45,16 +49,11 @@ export const ALERTS: HealthAlert[] = [
     id: "a1",
     type: "outbreak",
     severity: "high",
-    title: "Influenza cluster — Al Quoz camps",
+    title: "home.alert1.title",
     area: "Al Quoz 3, Dubai",
-    summary:
-      "Respiratory illness up 340% in 10 days. 47 workers have reported fever and cough from your block. Lab samples from 3 camps confirm seasonal influenza A.",
-    actions: [
-      "Wear a mask in shared areas and on the bus",
-      "Report fever today — 2 minutes by voice",
-      "Hydrate and rest; see a doctor if fever lasts over 2 days",
-    ],
-    issuedAgo: "2 days ago",
+    summary: "home.alert1.summary",
+    actions: ["home.alert1.action1", "home.alert1.action2", "home.alert1.action3"],
+    issuedAgo: "time.ago.2d",
     verifiedClinics: 12,
     reportsCount: 47,
     workersReached: 8300,
@@ -63,16 +62,11 @@ export const ALERTS: HealthAlert[] = [
     id: "a2",
     type: "occupational",
     severity: "high",
-    title: "Heatwave — 46°C expected",
+    title: "home.alert2.title",
     area: "Sharjah Industrial Area 4",
-    summary:
-      "Midday work ban extended to 10:30–16:00. Heat exhaustion cases up 180% this week among outdoor workers.",
-    actions: [
-      "Water every 20 minutes — 250 ml",
-      "Know the heatstroke signs: confusion, no sweating, hot dry skin",
-      "Report dizziness immediately — don't wait",
-    ],
-    issuedAgo: "6 hours ago",
+    summary: "home.alert2.summary",
+    actions: ["home.alert2.action1", "home.alert2.action2", "home.alert2.action3"],
+    issuedAgo: "time.ago.6h",
     verifiedClinics: 5,
     reportsCount: 31,
     workersReached: 5100,
@@ -81,12 +75,11 @@ export const ALERTS: HealthAlert[] = [
     id: "a3",
     type: "environmental",
     severity: "medium",
-    title: "Dust storm advisory",
+    title: "home.alert3.title",
     area: "All Dubai industrial zones",
-    summary:
-      "Air quality is 'unhealthy' today. Workers with asthma or a persistent cough should limit outdoor exposure and carry inhalers.",
-    actions: ["Wear a mask outdoors", "Asthmatic? Take your inhaler before shift"],
-    issuedAgo: "3 hours ago",
+    summary: "home.alert3.summary",
+    actions: ["home.alert3.action1", "home.alert3.action2"],
+    issuedAgo: "time.ago.3h",
     verifiedClinics: 2,
     reportsCount: 12,
     workersReached: 12400,
@@ -95,25 +88,25 @@ export const ALERTS: HealthAlert[] = [
     id: "a4",
     type: "seasonal",
     severity: "low",
-    title: "Hand, foot & mouth near your block",
+    title: "home.alert4.title",
     area: "Al Quoz family housing",
-    summary:
-      "Mild cases reported among children in nearby family housing. Adults rarely get sick, but can carry it home.",
-    actions: ["Wash hands before touching children", "No sharing utensils with kids"],
-    issuedAgo: "1 day ago",
+    summary: "home.alert4.summary",
+    actions: ["home.alert4.action1", "home.alert4.action2"],
+    issuedAgo: "time.ago.1d",
     verifiedClinics: 1,
     reportsCount: 4,
     workersReached: 1800,
   },
 ];
 
+/** i18n keys for the symptom report chips (Home) */
 export const SYMPTOM_REPORT_OPTIONS = [
-  "Fever",
-  "Cough",
-  "Headache",
-  "Sore throat",
-  "Body aches",
-  "Heat exhaustion",
-  "Dizziness",
-  "I feel fine",
+  "sym.fever",
+  "sym.cough",
+  "sym.headache",
+  "sym.soreThroat",
+  "sym.bodyAches",
+  "sym.heatExhaustion",
+  "sym.dizziness",
+  "sym.feelFine",
 ];

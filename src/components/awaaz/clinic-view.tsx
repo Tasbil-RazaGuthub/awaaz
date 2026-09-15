@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Waveform } from "./waveform";
-import { useLang } from "@/lib/awaaz-store";
+import { useT } from "@/lib/awaaz-store";
 import { DOCTORS, CONSULT_SCRIPT, type Doctor } from "@/data/doctors";
 import { SYMPTOM_OPTIONS, DURATION_OPTIONS, REDFLAG_OPTIONS, evaluateTriage, type TriageResult } from "@/data/triage";
 import { PERSONA } from "@/data/persona-alerts";
@@ -53,7 +53,7 @@ function Chip({ selected, children, onClick }: { selected: boolean; children: Re
 }
 
 export function ClinicView() {
-  const t = useLang();
+  const { t, langName } = useT();
   const [phase, setPhase] = useState<Phase>("triage");
   const [step, setStep] = useState(1);
   const [answers, setAnswers] = useState<TriageAnswers>({ symptoms: [], duration: null, redflags: [] });
@@ -122,10 +122,10 @@ export function ClinicView() {
         <section aria-labelledby="triage-heading" className="space-y-4">
           <div>
             <h2 id="triage-heading" className="text-lg font-semibold">
-              {t.strings.clinicTitle}
+              {t("clinic.title")}
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Answer 3 questions by tapping — or say them by voice. The triage decides who needs to be seen and who just needs to be heard.
+              {t("clinic.intro")}
             </p>
           </div>
 
@@ -133,20 +133,20 @@ export function ClinicView() {
             <CardContent className="space-y-4 p-4 sm:p-6">
               {step === 1 && (
                 <div className="space-y-3">
-                  <p className="font-medium">1 — What is troubling you today?</p>
+                  <p className="font-medium">{t("clinic.q1")}</p>
                   <div className="flex flex-wrap gap-2">
                     {SYMPTOM_OPTIONS.map((o) => (
                       <Chip key={o.id} selected={answers.symptoms.includes(o.id)} onClick={() => setAnswers((a) => ({ ...a, symptoms: toggle(a.symptoms, o.id) }))}>
-                        {o.label}
+                        {t(o.key)}
                       </Chip>
                     ))}
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Mic className="h-4 w-4" aria-hidden="true" /> Or hold the mic and say it in your language
+                      <Mic className="h-4 w-4" aria-hidden="true" /> {t("clinic.q1.mic")}
                     </div>
                     <Button className="min-h-11" size="sm" disabled={answers.symptoms.length === 0} onClick={() => setStep(2)}>
-                      Continue
+                      {t("clinic.continue")}
                     </Button>
                   </div>
                 </div>
@@ -154,20 +154,20 @@ export function ClinicView() {
 
               {step === 2 && (
                 <div className="space-y-3">
-                  <p className="font-medium">2 — Since when?</p>
+                  <p className="font-medium">{t("clinic.q2")}</p>
                   <div className="flex flex-wrap gap-2">
                     {DURATION_OPTIONS.map((o) => (
                       <Chip key={o.id} selected={answers.duration === o.id} onClick={() => setAnswers((a) => ({ ...a, duration: o.id }))}>
-                        {o.label}
+                        {t(o.key)}
                       </Chip>
                     ))}
                   </div>
                   <div className="flex items-center justify-between">
                     <Button variant="ghost" size="sm" className="min-h-11" onClick={() => setStep(1)}>
-                      <ChevronLeft className="h-4 w-4" aria-hidden="true" /> Back
+                      <ChevronLeft className="h-4 w-4" aria-hidden="true" /> {t("clinic.back")}
                     </Button>
                     <Button className="min-h-11" size="sm" disabled={!answers.duration} onClick={() => setStep(3)}>
-                      Continue
+                      {t("clinic.continue")}
                     </Button>
                   </div>
                 </div>
@@ -175,20 +175,20 @@ export function ClinicView() {
 
               {step === 3 && (
                 <div className="space-y-3">
-                  <p className="font-medium">3 — Any of these right now?</p>
+                  <p className="font-medium">{t("clinic.q3")}</p>
                   <div className="flex flex-wrap gap-2">
                     {REDFLAG_OPTIONS.map((o) => (
                       <Chip key={o.id} selected={answers.redflags.includes(o.id)} onClick={() => setAnswers((a) => ({ ...a, redflags: toggle(a.redflags, o.id) }))}>
-                        {o.label}
+                        {t(o.key)}
                       </Chip>
                     ))}
                   </div>
                   <div className="flex items-center justify-between">
                     <Button variant="ghost" size="sm" className="min-h-11" onClick={() => setStep(2)}>
-                      <ChevronLeft className="h-4 w-4" aria-hidden="true" /> Back
+                      <ChevronLeft className="h-4 w-4" aria-hidden="true" /> {t("clinic.back")}
                     </Button>
                     <Button className="min-h-11" size="sm" disabled={answers.redflags.length === 0} onClick={runTriage}>
-                      Get my result
+                      {t("clinic.getResult")}
                     </Button>
                   </div>
                 </div>
@@ -197,7 +197,7 @@ export function ClinicView() {
           </Card>
 
           <p className="text-xs text-muted-foreground">
-            Illustrative routing for the prototype — not a clinically validated tool. In production, rules are reviewed by partner clinicians and adapted per WHO guidance.
+            {t("clinic.disclaimer")}
           </p>
         </section>
       )}
@@ -212,22 +212,22 @@ export function ClinicView() {
               ) : (
                 <HeartPulse className="h-5 w-5 text-primary" aria-hidden="true" />
               )}
-              {result.title}
+              {t(result.title)}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 p-4 pt-2 sm:p-5 sm:pt-2">
-            <p className="text-sm leading-relaxed text-muted-foreground">{result.reason}</p>
+            <p className="text-sm leading-relaxed text-muted-foreground">{t(result.reason)}</p>
             <ul className="space-y-1.5 rounded-lg bg-muted/60 p-3">
               {result.advice.map((a) => (
-                <li key={a} className="text-sm">• {a}</li>
+                <li key={a} className="text-sm">• {t(a)}</li>
               ))}
             </ul>
             <div className="flex gap-2">
               <Button size="sm" className="min-h-11" variant={result.route === "in-person" ? "destructive" : "outline"} onClick={reset}>
-                {result.cta}
+                {t(result.cta)}
               </Button>
               <Button size="sm" variant="ghost" className="min-h-11" onClick={reset}>
-                Start over
+                {t("clinic.startOver")}
               </Button>
             </div>
           </CardContent>
@@ -240,39 +240,39 @@ export function ClinicView() {
           <div className="flex items-start justify-between gap-3">
             <div>
               <h2 id="match-heading" className="text-lg font-semibold">
-                {result.route === "tele-consult" ? "Your voice consult is ready to book" : "Talk to a doctor"}
+                {result.route === "tele-consult" ? t("clinic.match.ready") : t("clinic.title")}
               </h2>
-              <p className="mt-1 text-sm text-muted-foreground">{result.reason}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{t(result.reason)}</p>
             </div>
             <Button variant="ghost" size="sm" className="min-h-11 shrink-0" onClick={reset}>
-              <ChevronLeft className="h-4 w-4" aria-hidden="true" /> Triage
+              <ChevronLeft className="h-4 w-4" aria-hidden="true" /> {t("clinic.match.back")}
             </Button>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
             <Select value={langFilter} onValueChange={setLangFilter}>
-              <SelectTrigger className="min-h-11 w-40" aria-label="Filter doctors by language">
+              <SelectTrigger className="min-h-11 w-40" aria-label={t("a11y.filterLang")}>
                 <SelectValue placeholder="Language" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="any">Any language</SelectItem>
+                <SelectItem value="any">{t("clinic.filter.lang.any")}</SelectItem>
                 {["Urdu", "Punjabi", "Bengali", "Hindi", "Pashto", "Arabic", "Nepali"].map((l) => (
-                  <SelectItem key={l} value={l}>{l}</SelectItem>
+                  <SelectItem key={l} value={l}>{langName(l)}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
             <Select value={genderFilter} onValueChange={setGenderFilter}>
-              <SelectTrigger className="min-h-11 w-36" aria-label="Filter doctors by gender">
+              <SelectTrigger className="min-h-11 w-36" aria-label={t("a11y.filterGender")}>
                 <SelectValue placeholder="Gender" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="any">Any doctor</SelectItem>
-                <SelectItem value="female">Female doctor</SelectItem>
-                <SelectItem value="male">Male doctor</SelectItem>
+                <SelectItem value="any">{t("clinic.filter.gender.any")}</SelectItem>
+                <SelectItem value="female">{t("clinic.filter.gender.f")}</SelectItem>
+                <SelectItem value="male">{t("clinic.filter.gender.m")}</SelectItem>
               </SelectContent>
             </Select>
             <Badge variant="secondary" className="ms-auto">
-              Culture match = language + district + gender + religion
+              {t("clinic.match.formula")}
             </Badge>
           </div>
 
@@ -292,34 +292,34 @@ export function ClinicView() {
                       <p className="font-semibold">{d.name}</p>
                       {d.matchScore >= 90 && (
                         <Badge className="gap-1 bg-primary text-primary-foreground">
-                          <BadgeCheck className="h-3 w-3" aria-hidden="true" /> {d.matchScore}% match
+                          <BadgeCheck className="h-3 w-3" aria-hidden="true" /> {t("clinic.match.score", { n: d.matchScore })}
                         </Badge>
                       )}
-                      {d.gccBased && <Badge variant="secondary">In-GCC</Badge>}
-                      {d.volunteer && <Badge variant="secondary">Volunteer</Badge>}
+                      {d.gccBased && <Badge variant="secondary">{t("clinic.match.inGcc")}</Badge>}
+                      {d.volunteer && <Badge variant="secondary">{t("clinic.match.volunteer")}</Badge>}
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      {d.specialty} · based in {d.basedIn}
+                      {t("clinic.match.basedIn", { specialty: t(d.specialty), city: d.basedIn })}
                       {d.homeDistrict === PERSONA.homeDistrict && (
-                        <span className="font-medium text-primary"> · from {d.homeDistrict}, your home district</span>
+                        <span className="font-medium text-primary"> · {t("clinic.match.district", { district: d.homeDistrict })}</span>
                       )}
                     </p>
                     <div className="mt-1.5 flex flex-wrap gap-1.5">
                       {d.languages.map((l) => (
-                        <Badge key={l} variant="outline" className="text-xs font-normal">{l}</Badge>
+                        <Badge key={l} variant="outline" className="text-xs font-normal">{langName(l)}</Badge>
                       ))}
                     </div>
-                    <p className="mt-2 text-xs text-muted-foreground">{d.availability}</p>
+                    <p className="mt-2 text-xs text-muted-foreground">{t(d.availability, { time: d.availTime })}</p>
                   </div>
                   <Button size="sm" className="min-h-11 self-center" onClick={() => { setSelectedDoctor(d); setPhase("consult"); }}>
-                    <Mic className="me-1 h-4 w-4" aria-hidden="true" /> Voice consult
+                    <Mic className="me-1 h-4 w-4" aria-hidden="true" /> {t("clinic.match.voiceConsult")}
                   </Button>
                 </div>
               </Card>
             ))}
             {filteredDoctors.length === 0 && (
               <Card className="p-6 text-center text-sm text-muted-foreground">
-                No doctors match these filters — try &quot;Any language&quot;.
+                {t("clinic.match.none")}
               </Card>
             )}
           </div>
@@ -328,7 +328,7 @@ export function ClinicView() {
 
       {/* Phase 3 — Voice consult */}
       {phase === "consult" && selectedDoctor && (
-        <section aria-label="Voice consultation in progress" className="space-y-4">
+        <section aria-label={t("a11y.consultInProgress")} className="space-y-4">
           <Card className="border-primary/40">
             <CardHeader className="p-4 pb-2 sm:p-5 sm:pb-2">
               <div className="flex flex-wrap items-center justify-between gap-3">
@@ -338,15 +338,15 @@ export function ClinicView() {
                   </div>
                   <div>
                     <p className="font-semibold leading-tight">{selectedDoctor.name}</p>
-                    <p className="text-xs text-muted-foreground">{selectedDoctor.specialty} · voice consult</p>
+                    <p className="text-xs text-muted-foreground">{t("consult.sub", { specialty: t(selectedDoctor.specialty) })}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant="secondary" className="gap-1">
-                    <CircleDollarSign className="h-3 w-3" aria-hidden="true" /> $0.05 / consult
+                    <CircleDollarSign className="h-3 w-3" aria-hidden="true" /> {t("consult.cost")}
                   </Badge>
                   <Badge variant="secondary" className="gap-1">
-                    <Gauge className="h-3 w-3" aria-hidden="true" /> ≈2.3 MB vs ≈26 MB for video
+                    <Gauge className="h-3 w-3" aria-hidden="true" /> {t("consult.data")}
                   </Badge>
                 </div>
               </div>
@@ -355,15 +355,15 @@ export function ClinicView() {
             <CardContent className="space-y-5 p-4 pt-2 sm:p-5 sm:pt-2">
               {/* live waveform + timer */}
               <div className="flex flex-col items-center gap-3 rounded-xl bg-primary/5 p-6">
-                <Waveform bars={32} active className="h-12 w-full max-w-xs justify-center" label="live voice waveform" />
-                <p className="font-mono text-sm text-muted-foreground">{fmt(consultSeconds)} · connected</p>
+                <Waveform bars={32} active className="h-12 w-full max-w-xs justify-center" label={t("a11y.liveWave")} />
+                <p className="font-mono text-sm text-muted-foreground">{t("consult.connected", { time: fmt(consultSeconds) })}</p>
                 <div className="flex items-center gap-3">
                   <Button
                     variant={micOn ? "default" : "outline"}
                     size="icon"
                     className="h-11 w-11 rounded-full"
                     aria-pressed={micOn}
-                    aria-label={micOn ? "Mute microphone" : "Unmute microphone"}
+                    aria-label={micOn ? t("a11y.mute") : t("a11y.unmute")}
                     onClick={() => setMicOn((m) => !m)}
                   >
                     <Mic className="h-5 w-5" aria-hidden="true" />
@@ -374,11 +374,11 @@ export function ClinicView() {
                     className="min-h-11 rounded-full"
                     onClick={() => setPhase("summary")}
                   >
-                    <PhoneOff className="me-1 h-4 w-4" aria-hidden="true" /> End consult
+                    <PhoneOff className="me-1 h-4 w-4" aria-hidden="true" /> {t("consult.end")}
                   </Button>
                 </div>
                 <p className="text-center text-xs text-muted-foreground">
-                  Camera stays off by default — modest, low-data, and cheap. Video only if you and the doctor both agree it is needed.
+                  {t("consult.cameraNote")}
                 </p>
               </div>
 
@@ -413,7 +413,7 @@ export function ClinicView() {
                         {turn.urdu}
                       </p>
                       <p className="mt-1 text-xs opacity-75" dir="ltr">
-                        {turn.english}
+                        {t(turn.text)}
                       </p>
                     </div>
                   </div>
@@ -431,16 +431,16 @@ export function ClinicView() {
             <CardHeader className="p-4 pb-2 sm:p-5 sm:pb-2">
               <CardTitle id="summary-heading" className="flex items-center gap-2 text-base sm:text-lg">
                 <ShieldCheck className="h-5 w-5 text-primary" aria-hidden="true" />
-                Consultation summary
+                {t("summary.title")}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 p-4 pt-2 sm:p-5 sm:pt-2">
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {[
-                  { label: "Doctor", value: selectedDoctor.name },
-                  { label: "Duration", value: `${fmt(consultSeconds)} (simulated)` },
-                  { label: "Cost", value: "$0.05" },
-                  { label: "Follow-up", value: "In 3 days" },
+                  { label: t("summary.doctor"), value: selectedDoctor.name },
+                  { label: t("summary.duration"), value: t("summary.duration.value", { time: fmt(consultSeconds) }) },
+                  { label: t("summary.cost"), value: t("summary.cost.value") },
+                  { label: t("summary.followup"), value: t("summary.followup.value") },
                 ].map((s) => (
                   <div key={s.label} className="rounded-lg bg-muted/60 p-3">
                     <p className="text-xs text-muted-foreground">{s.label}</p>
@@ -450,27 +450,27 @@ export function ClinicView() {
               </div>
 
               <div className="rounded-lg bg-muted/60 p-3">
-                <p className="mb-1.5 text-sm font-medium">Doctor&apos;s advice</p>
+                <p className="mb-1.5 text-sm font-medium">{t("summary.advice")}</p>
                 <ul className="space-y-1 text-sm text-muted-foreground">
-                  <li>• Seasonal influenza — rest and fluids</li>
-                  <li>• Paracetamol 500 mg every 6 hours, only if fever above 38°C</li>
-                  <li>• Return immediately if chest pain or breathing trouble starts</li>
-                  <li>• Wear a mask in shared spaces — your camp has an active flu alert</li>
+                  <li>• {t("summary.advice1")}</li>
+                  <li>• {t("summary.advice2")}</li>
+                  <li>• {t("summary.advice3")}</li>
+                  <li>• {t("summary.advice4")}</li>
                 </ul>
               </div>
 
               <div className="rounded-lg border p-3">
                 <p className="mb-1.5 flex items-center gap-2 text-sm font-medium">
-                  <Volume2 className="h-4 w-4 text-primary" aria-hidden="true" /> Voice notes saved
+                  <Volume2 className="h-4 w-4 text-primary" aria-hidden="true" /> {t("summary.saved")}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  The full consult is saved as audio notes in {selectedDoctor.languages[0]} — replayable in the app or by calling the IVR line.
+                  {t("summary.saved.detail", { language: langName(selectedDoctor.languages[0]) })}
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-2">
                 <Button size="sm" className="min-h-11" onClick={reset}>
-                  Book another consult
+                  {t("summary.another")}
                 </Button>
               </div>
             </CardContent>
@@ -480,7 +480,7 @@ export function ClinicView() {
             <CardContent className="flex items-start gap-3 p-4 sm:p-5">
               <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
               <p className="text-sm text-muted-foreground">
-                By keeping minor illness on voice, the camp&apos;s in-person slots stayed free for the ones who needed them — the triage result told {PERSONA.name} exactly which path to take, and the dashboard records the routing outcome anonymously.
+                {t("summary.impact", { name: PERSONA.name })}
               </p>
             </CardContent>
           </Card>
