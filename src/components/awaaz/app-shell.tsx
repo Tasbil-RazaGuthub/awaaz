@@ -10,6 +10,7 @@ import { ClinicView } from "./clinic-view";
 import { CirclesView } from "./circles-view";
 import { AcademyView } from "./academy-view";
 import { DataView } from "./data-view";
+import { AppDemo } from "./demo-view";
 import { Home, Stethoscope, AudioLines, GraduationCap, BarChart3, Phone, Languages, GitFork } from "lucide-react";
 
 const TABS: { key: TabKey; navKey: string; icon: React.ReactNode }[] = [
@@ -48,6 +49,7 @@ export function AwaazApp() {
           </div>
 
           <div className="flex items-center gap-2">
+            <AppDemo />
             <Select value={lang} onValueChange={(v) => setLang(v)}>
               <SelectTrigger
                 className="h-11 w-[130px] sm:w-[150px]"
